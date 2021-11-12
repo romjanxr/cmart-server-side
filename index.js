@@ -23,6 +23,7 @@ async function run() {
         const carCollection = database.collection('cars');
         const orderCollection = database.collection('orders');
         const userCollection = database.collection('users');
+        const reviewCollection = database.collection('reviews');
 
         // ALL CARS GET API
         app.get('/cars', async (req, res) => {
@@ -129,6 +130,19 @@ async function run() {
             const updateDoc = { $set: { role: 'admin' } }
             const result = await userCollection.updateOne(filter, updateDoc);
             res.json(result)
+        })
+
+        // Review Post API
+        app.post('/reviews', async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
+            res.json(result);
+        })
+
+        // Review Get API
+        app.get('/reviews', async (req, res) => {
+            const result = await reviewCollection.find({}).toArray();
+            res.json(result);
         })
 
     }
