@@ -14,8 +14,6 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-console.log(uri)
-
 async function run() {
     try {
         await client.connect();
@@ -42,7 +40,6 @@ async function run() {
         // CAR POST API
         app.post('/cars', async (req, res) => {
             const car = req.body;
-            console.log(car)
             const result = await carCollection.insertOne(car);
             res.json(result);
         })
@@ -114,7 +111,7 @@ async function run() {
             const query = { email: email };
             const user = await userCollection.findOne(query);
             let isAdmin;
-            if (user.role === "admin") {
+            if (user?.role === "admin") {
                 isAdmin = true;
             }
             else {
